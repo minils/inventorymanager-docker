@@ -1,0 +1,3 @@
+[submodule "InventoryManager"]
+	path = InventoryManager
+	url = https://github.com/minils/InventoryManager
