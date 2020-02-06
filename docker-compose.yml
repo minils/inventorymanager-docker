@@ -3,10 +3,10 @@ services:
   python:
     build: python
     volumes:
-      - static:/app/static
+      - static-vol:/app/static
     environment:
       - INVENTORY_DB_ENGINE=django.db.backends.mysql
-      - INVENTORY_DEBUG_MODE=False
+      - INVENTORY_DEBUG_MODE=True
       - INVENTORY_DB_NAME=inventory
       - INVENTORY_DB_USER=inventory
       - INVENTORY_DB_PASSWORD=zbakhKStr543mT_OB/r}actiTSNHOT
@@ -14,20 +14,28 @@ services:
       - INVENTORY_DB_PORT=3306
       - INVENTORY_TIME_ZONE=Europe/Berlin
     depends_on:
-      - web
+      - db
     restart: always
   web:
     build: web
     ports:
       - "8000:8000"
     volumes:
-      - static:/var/www/static
+      - static-vol:/var/www/static
     restart: always
+    depends_on:
+      - python
   db:
-    image: maridadb:10
-    #volumes: ./inventorydb:/var/lib/mysql
-  environment:
-     - MYSQL_DATABASE=inventory
-     - MYSQL_USER=inventory
-     - MYSQL_PASSWORD=zbakhKStr543mT_OB/r}actiTSNHOT
-     - MYSQL_RANDOM_ROOT_PASSWORD=yes
+    image: mariadb
+    volumes:
+      - db-vol:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=inventory
+      - MYSQL_USER=inventory
+      - MYSQL_PASSWORD=zbakhKStr543mT_OB/r}actiTSNHOT
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+volumes:
+  static-vol:
+    driver: local
+  db-vol:
+    driver: local
