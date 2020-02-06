@@ -1,25 +1,33 @@
-VERSION: "3.7"
+version: "3.7"
 services:
-  inventory_django:
-    build: .
-    ports: 8000:8000
+  python:
+    build: python
+    volumes:
+      - static:/app/static
     environment:
       - INVENTORY_DB_ENGINE=django.db.backends.mysql
       - INVENTORY_DEBUG_MODE=False
       - INVENTORY_DB_NAME=inventory
       - INVENTORY_DB_USER=inventory
       - INVENTORY_DB_PASSWORD=zbakhKStr543mT_OB/r}actiTSNHOT
-      - INVENTORY_DB_HOST=inventory_maria
+      - INVENTORY_DB_HOST=db
       - INVENTORY_DB_PORT=3306
       - INVENTORY_TIME_ZONE=Europe/Berlin
     depends_on:
-      - inventory_maria
-  inventory_maria:
-    image: mariadb:10
+      - web
+    restart: always
+  web:
+    build: web
+    ports:
+      - "8000:8000"
     volumes:
-      - ./inventorydb:/var/lib/mysql
-    environmment:
-      - MYSQL_DATABASE=inventory
-      - MYSQL_USER=inventory
-      - MYSQL_PASSWORD=zbakhKStr543mT_OB/r}actiTSNHOT
-      - MYSQL_RANDOM_ROOT_PASSWORD=yes 
+      - static:/var/www/static
+    restart: always
+  db:
+    image: maridadb:10
+    #volumes: ./inventorydb:/var/lib/mysql
+  environment:
+     - MYSQL_DATABASE=inventory
+     - MYSQL_USER=inventory
+     - MYSQL_PASSWORD=zbakhKStr543mT_OB/r}actiTSNHOT
+     - MYSQL_RANDOM_ROOT_PASSWORD=yes
