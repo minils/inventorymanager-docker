@@ -6,4 +6,5 @@ DATA=$(python3 manage.py dumpdata inventory)
 if [[ "$DATA" == "[]" ]]; then
     python3 manage.py loaddata inventory/fixtures/datasetup.json
 fi
+python3 manage.py compilemessages
 uwsgi --ini uwsgi-app.ini
