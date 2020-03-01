@@ -1,7 +1,7 @@
 FROM alpine:latest
 ENV LANG C.UTF-8
 ENV PYTHONUNBUFFERED 1
-RUN apk add python3 python3-dev gcc musl-dev linux-headers git bash mariadb-dev
+RUN apk add python3 python3-dev gcc musl-dev linux-headers git bash mariadb-dev gettext
 WORKDIR /app
 RUN pip3 install --upgrade pip setuptools
 COPY InventoryManager /app
